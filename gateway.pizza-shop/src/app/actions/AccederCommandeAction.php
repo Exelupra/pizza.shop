@@ -25,13 +25,9 @@ class AccederCommandeAction extends AbstractAction
             $response->getBody()->write($res);
             $response->withStatus(200);
             return $response;
-        } catch(HttpUnauthorizedException $e){
+        } catch(HttpUnauthorizedException $exception){
             return $response->withStatus(401);
-        } catch(HttpMethodNotAllowedException $e){
-            return $response->withStatus(405);
-        } catch(HttpBadRequestException $e){
-            return $response->withStatus(400);
-        } catch(HttpNotFoundException $e){
+        } catch(HttpNotFoundException $exception){
             return $response->withStatus(404);
         }
     }
