@@ -2,12 +2,11 @@
 
 namespace pizzashop\commande\app\actions;
 
-use Slim\Exception\HttpBadRequestException;
-use Slim\Exception\HttpInternalServerErrorException;
-use Slim\Exception\HttpNotFoundException;
-use Slim\Exception\HttpUnauthorizedException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Exception\HttpUnauthorizedException;
 
 class ValiderCommandeAction extends AbstractAction
 {
@@ -26,16 +25,11 @@ class ValiderCommandeAction extends AbstractAction
                 throw new HttpNotFoundException($request, "Commande inexistante");
             }
 
-            try {
-                $comm = $sco->accederCommande($args['id']);
-                if ($comm->etat == 1) {
-                    $sco->validerCommande($args['id']);
-                } else {
-                    throw new HttpBadRequestException($request, "Transition pas correcte");
-                }
-
-            } catch (\Error $e) {
-                throw new HttpInternalServerErrorException($request, "Problème interne");
+            $comm = $sco->accederCommande($args['id']);
+            if ($comm->etat == 1) {
+                $sco->validerCommande($args['id']);
+            } else {
+                throw new HttpBadRequestException($request, "Transition pas correcte");
             }
         } else {
             throw new HttpUnauthorizedException($request, "L'état doit être 'validee'");

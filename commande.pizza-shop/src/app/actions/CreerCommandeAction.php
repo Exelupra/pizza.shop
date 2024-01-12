@@ -19,6 +19,9 @@ class CreerCommandeAction extends AbstractAction
         $uuid4 = Uuid::uuid4();
 
         $itemlist = [];
+        if (!isset($var["items"]) || !isset($var["type_livraison"]) || !isset($var["mail_client"])){
+            throw new HttpBadRequestException($request);
+        }
         $items = $var["items"];
         foreach ($items as $i){
             $itemlist[] = new ItemDTO($i["numero"], $i["taille"], $i["quantite"], "", "", 0);
@@ -35,7 +38,7 @@ class CreerCommandeAction extends AbstractAction
         return $response;
         } catch (\Error $e){
             echo $e;
-            throw new HttpBadRequestException($request, "400 Bad Request");
+            throw new HttpBadRequestException($request);
         }
 
 
