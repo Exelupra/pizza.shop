@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpNotFoundException;
 
 class getProduitsById extends AbstractAction
 {
@@ -15,7 +16,12 @@ class getProduitsById extends AbstractAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $sca = $this->container->get("sCatalogue");
-        $res = $sca->getProduit($args['id']);
+        try {
+            $res = $sca->getProduit($args['id']);
+        } catch (\Exception $exception){
+            throw new HttpNotFoundException($request, "Id de produit non existante");
+        }
+
         $response->getBody()->write(json_encode($res));
         return $response;
     }

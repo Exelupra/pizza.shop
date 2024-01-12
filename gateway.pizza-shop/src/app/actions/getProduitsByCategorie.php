@@ -20,10 +20,8 @@ class getProduitsByCategorie extends AbstractAction
             $response->getBody()->write($res);
             $response->withStatus(200);
             return $response;
-        } catch(HttpNotFoundException $e){
+        } catch(HttpNotFoundException $e) {
             return $response->withStatus(404);
-        } catch(HttpBadRequestException $e){
-            return $response->withStatus(400);
-        }   
+        }
     }
 }

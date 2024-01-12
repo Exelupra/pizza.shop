@@ -6,6 +6,7 @@ use pizzashop\catalogue\domain\dto\ProduitDTO;
 use pizzashop\catalogue\domain\dto\smProduitDTO;
 use pizzashop\catalogue\domain\entities\catalogue\Produit;
 use pizzashop\catalogue\domain\entities\catalogue\Taille;
+use Slim\Exception\HttpNotFoundException;
 
 class sCatalogue implements iInfoProduit, iBrowseProduit
 {
@@ -23,9 +24,15 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
         return $tabProd;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getProduitsParCategorie($catId)
     {
         $allProd = Produit::where('categorie_id', $catId)->get();
+        if (empty($allProd)){
+            throw new \Exception();
+        }
         $tabProd = [];
         foreach ($allProd as $prod) {
 
@@ -41,6 +48,10 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
     {
         // Récupérer le produit en fonction du numéro
         $produit = Produit::where('numero', $num)->first();
+
+        if (is_null($produit)){
+            throw new \Exception("pas de produits");
+        }
 
         $categorie = $produit->categorie()->first();
 
