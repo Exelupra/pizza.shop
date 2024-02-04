@@ -2,8 +2,10 @@
 Pizza Shop est un projet de qu'on a fait en 3ème année de BUT informatique pour apprendre à construire des API ainsi que manier les redrections à d'autres API pour gérer des tâches externes tels que l'authentification JWT.
 
 ## ️👥 Auteurs
+- Bernardet Nicolas
 - Gallion Laura
 - Demarque Amaury
+- Oudin Clément
 
 ## 💯Déploiement
 Pour déployer l'application, il suffit de lancer les conteneurs de pizza.shop.components
@@ -59,43 +61,6 @@ Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ord
 - pizza_shop.auth.schema.sql
 - pizza_shop.auth.data.sql
 
-### 🔑 BDD Production
-
-Installer les dépendances nécessaires :
-
-```npm install amqplib```
-```npm install express knex mysql ```
-
-Lancer le docker-compose :
-
-```docker compose up```
-
-Pour avoir accès à la base de donnée:
-user:user
-password:palia
-db:pizza_shop
-serveur:mysql
-
-Pour avoir accès a RabbitMQ:
-user:user
-password:palia
-
-Routes :
-- 🟢 GET `/`
-- 🟢 GET `/commandes`
-- 🟢 GET `/commandes/:id`
-- 🟢 PATCH `/commandes/:id/etat`
-- 🟢 PATCH `/commandes/:id/changer-etat`
-
-
-Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ordre est important) venant de pizza.shop/auth.pizza-shop/sql/
-
-- pizza_shop.auth.schema.sql
-- pizza_shop.auth.data.sql
-
-Problème rencontré :
-- Problème de connexion à la base de donnée avec Knex
-
 ## 🏹 Liens utiles, routes et compte
 
 ### ✨ Liens
@@ -128,3 +93,37 @@ Problème rencontré :
 
 - nom d'utilisateur : AlixPerrot@free.fr
 - mot de passe : AlixPerrot
+
+
+### Commande à utiliser pour RabitMQ (TD8)
+
+docker compose run php php src/script/affiche_commande
+
+- Établissement d'un canal de communication avec le serveur RabbitMQ pour l'envoi et la réception de messages.
+- Déclaration d'une file d'attente nommée 'nouvelles_commandes' sur le canal, avec des paramètres spécifiés pour la durabilité, l'exclusivité et l'auto-suppression.
+- Tentative de récupération d'un message à partir de la file d'attente 'nouvelles_commandes' en mode GET.
+- Décodage du contenu JSON du message récupéré et affichage à l'écran.
+- Acquittement du message pour indiquer qu'il a été traité avec succès.
+- Affichage d'un message indiquant l'absence de message dans la file d'attente, le cas échéant.  
+
+
+docker compose run php php src/script/consume_commande
+
+- Établissement d'un canal de communication avec le serveur RabbitMQ pour l'envoi et la réception de messages.
+- Déclaration d'une file d'attente nommée 'nouvelles_commandes' sur le canal, avec des paramètres spécifiés pour la durabilité, l'exclusivité et l'auto-suppression.
+- Attente de messages avec affichage d'une instruction pour arrêter le script en appuyant sur Ctrl+C.
+- Mise en place d'un callback pour traiter les messages reçus, incluant le décodage du contenu JSON, l'affichage du message et l'acquittement du message traité.
+- Consommation de messages en mode "consume".
+- Boucle d'attente pour la gestion des callbacks.
+
+
+docker compose run php php src/script/publier_commande
+
+- Etablissement d'un canal de communication avec le serveur RabbitMQ pour l'envoi et la réception de messages.
+- Déclaration d'une file d'attente nommée 'nouvelles_commandes' sur le canal, avec des paramètres spécifiés pour la durabilité, l'exclusivité et l'auto-suppression.
+- Création d'une commande aléatoire (exemple).
+- Sérialisation de la commande en JSON.
+- Création d'un message à partir de la commande sérialisée.
+- Publication du message dans la file d'attente 'nouvelles_commandes'.
+- Affichage de la commande publiée.
+
