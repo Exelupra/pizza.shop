@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  mysql:
+    image: 'mariadb:latest'
+    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+    environment:
+      MYSQL_ROOT_PASSWORD: palia
+      MYSQL_DATABASE: pizza_shop
+      MYSQL_USER: user
+      MYSQL_PASSWORD: palia
+    ports:
+      - "3306:3306"
+    networks:
+      - service_net
+    volumes:
+      - ./data/sql:/var/sql
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "user"
+      RABBITMQ_DEFAULT_PASS: "palia"
+    networks:
+      - service_net
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - service_net
+
+  # Service Node.js
+  node_app:
+    image: node:alpine
+    working_dir: /usr/app
+    command: sh -c "npm i && npm run watch"
+    volumes:
+      - ./:/usr/app
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    depends_on:
+      - mysql
+      - rabbitmq
+    networks:
+      - service_net
+
+networks:
+  service_net:
+    driver: bridge
