@@ -2,10 +2,8 @@
 Pizza Shop est un projet de qu'on a fait en 3ème année de BUT informatique pour apprendre à construire des API ainsi que manier les redrections à d'autres API pour gérer des tâches externes tels que l'authentification JWT.
 
 ## ️👥 Auteurs
-- Bernardet Nicolas
 - Gallion Laura
 - Demarque Amaury
-- Oudin Clément
 
 ## 💯Déploiement
 Pour déployer l'application, il suffit de lancer les conteneurs de pizza.shop.components
@@ -60,6 +58,43 @@ Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ord
 
 - pizza_shop.auth.schema.sql
 - pizza_shop.auth.data.sql
+
+### 🔑 BDD Production
+
+Installer les dépendances nécessaires :
+
+```npm install amqplib```
+```npm install express knex mysql ```
+
+Lancer le docker-compose :
+
+```docker compose up```
+
+Pour avoir accès à la base de donnée:
+user:user
+password:palia
+db:pizza_shop
+serveur:mysql
+
+Pour avoir accès a RabbitMQ:
+user:user
+password:palia
+
+Routes :
+- 🟢 GET `/`
+- 🟢 GET `/commandes`
+- 🟢 GET `/commandes/:id`
+- 🟢 PATCH `/commandes/:id/etat`
+- 🟢 PATCH `/commandes/:id/changer-etat`
+
+
+Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ordre est important) venant de pizza.shop/auth.pizza-shop/sql/
+
+- pizza_shop.auth.schema.sql
+- pizza_shop.auth.data.sql
+
+Problème rencontré :
+- Problème de connexion à la base de donnée avec Knex
 
 ## 🏹 Liens utiles, routes et compte
 
